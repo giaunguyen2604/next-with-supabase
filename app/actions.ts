@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -132,3 +133,49 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const createNoteAction = async (prevState: {
+  message: string;
+}, formData: FormData) => {
+  const note = formData.get("note") as string;
+  const supabase = await createClient();
+
+  if (!note) {
+    return { message: "Note is required", code: 400 };
+  }
+
+  if (note.length > 100) {
+    return { message: "Note must be less than 100 characters", code: 400 };
+  }
+
+  const { data, error } = await supabase.from("notes").insert({ title: note });
+
+  if (error) {
+    return { message: "Failed to create note", code: 400 };
+  }
+
+  revalidatePath("/notes");
+
+  return { message: "Note created!", code: 200 };
+}
+
+export const deleteNoteAction = async (prevState: {
+  message: string;
+}, formData: FormData) => {
+  const noteId = formData.get("note_id") as string;
+
+  if (!noteId) {
+    return { code: 400, message: "Failed to retrive id" };
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("notes").delete().eq("id", noteId);
+
+  if (error) {
+    return { code: 400, message: "Failed to delete note" };
+  }
+
+  revalidatePath("/notes");
+  return { code: 200, message: `Note deleted` };
+}
