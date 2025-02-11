@@ -14,7 +14,7 @@ env:
     availability:
       - BUILD
       - RUNTIME
-  - variable: NEXT_PUBLIC_SUPABASE_URL
+  - variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
     value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3dWVnaHB1YnFma2prbHFieG52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkxNjE1NDcsImV4cCI6MjA1NDczNzU0N30.L02gTMBTSTz_gXQ3VzmKzNAQzXPEEqR7KIo8JAbw65g
     availability:
       - BUILD
