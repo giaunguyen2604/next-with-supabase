@@ -44,6 +44,7 @@ const NoteList = ({ notes }: Props) => {
 		<div className='mt-3'>
 			<h1 className='font-bold'>Notes:</h1>
 			<div className='flex flex-col gap-3 mt-2'>
+				{!notes?.length && <p className='text-center'>No notes found.</p>}
 				{notes?.map(note => (
 					<div className='flex gap-2 items-center' key={note.id}>
 						<div className='border border-gray-300 rounded-md px-3 py-2 bg-gray-100 flex-grow w-[400px] text-ellipsis text-nowrap overflow-hidden'>
